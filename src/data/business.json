@@ -1,0 +1,19 @@
+{
+  "name": "Mankey Mouze Specialty Coffee",
+  "shortName": "Mankey Mouze",
+  "locality": "Roxas City",
+  "region": "Capiz",
+  "country": "PH",
+  "quote": "Passionate about creating great beverages and dedicated to giving every customer an exceptional experience.",
+  "phone": {
+    "display": "0991 175 4958",
+    "tel": "+639911754958"
+  },
+  "links": {
+    "directions": "https://maps.app.goo.gl/rqrYBFUWFbJk5x6G8",
+    "facebook": "https://m.me/mankeymouze",
+    "instagram": "https://instagram.com/mankeymouze",
+    "instagramHandle": "@mankeymouze"
+  },
+  "_todo": "facebook is a placeholder: replace links.facebook with the real Facebook page URL (e.g. https://www.facebook.com/<page>) or its m.me/<page> Messenger link."
+}

@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import '../styles/motion.css';
+import Reveal from '../components/Reveal.astro';
+import business from '../data/business.json';
+import { sections, currency, priceRange } from '../lib/menu';
+import logo from '../assets/images/logo.png';
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImage = new URL('/og-image.jpg', site).href;
+const { min, max } = priceRange();
+
+// schema.org LocalBusiness (CafeOrCoffeeShop). Only facts from PRODUCT.md:
+// no street address, no opening hours, no ratings.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CafeOrCoffeeShop',
+  '@id': `${canonical}#shop`,
+  name: business.name,
+  description,
+  url: canonical,
+  image: ogImage,
+  logo: new URL(logo.src, site).href,
+  telephone: business.phone.tel,
+  priceRange: `${currency}${min}–${currency}${max}`,
+  servesCuisine: 'Coffee',
+  currenciesAccepted: 'PHP',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: business.locality,
+    addressRegion: business.region,
+    addressCountry: business.country,
+  },
+  hasMap: business.links.directions,
+  sameAs: [business.links.instagram, business.links.facebook],
+  hasMenu: {
+    '@type': 'Menu',
+    name: 'Menu',
+    hasMenuSection: sections.map((s) => ({
+      '@type': 'MenuSection',
+      name: s.title,
+      description: s.note,
+      hasMenuItem: s.items.map((i) => ({
+        '@type': 'MenuItem',
+        name: i.name,
+        description: i.ingredients,
+        offers: { '@type': 'Offer', price: i.price, priceCurrency: 'PHP' },
+      })),
+    })),
+  },
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={canonical}>
+<meta name="theme-color" content="#14160f">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content={business.name}>
+<meta property="og:locale" content="en_PH">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={ogImage}>
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The lamp-lit corner at Mankey Mouze, with the framed monkey logo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={ogImage}>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@200;400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<script is:inline>
+  // Scroll reveals hide content only when motion is allowed and the observer exists; if the reveal script
+  // has not run within 3s (blocked or failed), everything is shown again.
+  (function () {
+    try {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      var r = document.documentElement;
+      r.classList.add('reveal-on');
+      setTimeout(function () { if (!window.__lampReveal) r.classList.remove('reveal-on'); }, 3000);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<slot />
+<Reveal />
+</body>
+</html>

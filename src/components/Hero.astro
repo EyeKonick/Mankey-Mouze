@@ -1,0 +1,92 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import business from '../data/business.json';
+import lamp from '../assets/images/lamp-corner.png';
+import storefront from '../assets/images/storefront.png';
+---
+<section class="hero" aria-label="Welcome">
+  <Image class="photo" src={lamp} alt="A square lamp glowing in a corner of the shop, beside the framed Mankey Mouze logo"
+    format="webp" quality={80} widths={[640, 960, 1280, 1536]} sizes="(max-width: 640px) 100vw, 64vw"
+    loading="eager" fetchpriority="high" />
+  <div class="inner">
+    <div>
+      <h1>The lamp's on. Come in.</h1>
+      <p class="lede">Pour-over, Spanish latte and matcha, made by hand at a small dark-wood bar in {business.locality}.</p>
+      <div class="ctas">
+        <a class="btn btn-amber" href={business.links.directions} target="_blank" rel="noopener"><Icon name="pin" /> Get directions</a>
+        <a class="btn btn-line" href={business.links.facebook} target="_blank" rel="noopener"><Icon name="message" /> Message us</a>
+        <a class="btn btn-line" href={`tel:${business.phone.tel}`}><Icon name="phone" /> Call</a>
+      </div>
+    </div>
+    <aside class="card" aria-label="How to recognise the shop">
+      <div class="thumb">
+        <Image src={storefront} alt="The Mankey Mouze storefront with its bench and hanging sign"
+          format="webp" quality={80} widths={[340, 680]} sizes="(max-width: 640px) 64px, 128px" loading="eager" />
+      </div>
+      <div class="body">
+        <h2>Look for the monkey sign</h2>
+        <p>Dark wood front, a bench outside, a round sign over the path.</p>
+        <div class="row">
+          <b>{business.locality}, {business.region}</b>
+          <a class="go" href={business.links.directions} target="_blank" rel="noopener" aria-label="Open directions in Google Maps"><Icon name="arrow" /></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style is:global>
+  .hero{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:flex-end}
+  .photo{position:absolute;top:0;right:0;width:64%;height:100%;object-fit:cover;object-position:50% 58%}
+  .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:
+    linear-gradient(90deg,var(--wall) 0%,var(--wall) 36%,rgba(20,22,15,.72) 46%,rgba(20,22,15,0) 64%),
+    linear-gradient(0deg,rgba(20,22,15,.85) 0%,rgba(20,22,15,0) 32%)}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22vh;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(20,22,15,0) 0%,rgba(20,22,15,.6) 55%,var(--wall) 100%)}
+  .inner{position:relative;z-index:2;width:min(1240px,calc(100% - 40px));margin:0 auto;padding:0 12px 64px;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:48px;align-items:end}
+  h1{font-weight:200;font-size:clamp(3.2rem,6.6vw,6rem);line-height:.98;letter-spacing:-.035em;max-width:9ch;text-wrap:balance}
+  .lede{margin-top:1.4rem;max-width:38ch;color:var(--bone-dim);font-size:1.125rem}
+  .ctas{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2rem}
+
+  .card{display:grid;grid-template-columns:128px 1fr;gap:14px;padding:10px;border-radius:22px;background:var(--bone);color:var(--ink);box-shadow:0 30px 60px -24px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.25)}
+  .card .thumb{position:relative;border-radius:14px;overflow:hidden;min-height:146px}
+  .card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:23% 24%}
+  .card .body{display:flex;flex-direction:column;padding:6px 4px 2px 0}
+  .card h2{font-size:1.12rem;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+  .card p{font-size:.9rem;line-height:1.45;color:#4c4d42;margin-top:.3rem;flex:1}
+  .card .row{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem}
+  .card .row b{font-weight:500}
+  .card .go{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--bone);transition:background-color .2s}
+  .card .go:hover{background:#000}
+
+  @media (prefers-reduced-motion:no-preference){
+    .photo{animation:lamp 2.2s cubic-bezier(.16,1,.3,1) both}
+    .inner > div{animation:rise 1.1s .6s cubic-bezier(.16,1,.3,1) both}
+    .card{animation:rise 1.1s .9s cubic-bezier(.16,1,.3,1) both}
+    @keyframes lamp{from{filter:brightness(.28) saturate(.4)}to{filter:none}}
+    @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  }
+
+  @media (max-width:980px){
+    .inner{grid-template-columns:1fr;gap:28px}
+    .card{max-width:440px}
+  }
+  @media (max-width:640px){
+    .photo{width:100%;height:52%;object-position:66% 52%}
+    .hero::before{background:linear-gradient(0deg,var(--wall) 0%,var(--wall) 50%,rgba(20,22,15,.55) 58%,rgba(20,22,15,0) 72%)}
+    .inner{width:100%;padding:0 20px 32px}
+    h1{font-size:3rem}
+    .lede{font-size:1.02rem;margin-top:1rem}
+    .ctas{margin-top:1.4rem}
+    .ctas .btn-amber{flex:1 1 100%;justify-content:center}
+    .ctas .btn-line{flex:1;justify-content:center;padding:.7rem .8rem;font-size:.95rem}
+    .inner{gap:16px}
+    .card{grid-template-columns:64px 1fr;gap:12px;padding:8px;border-radius:16px}
+    .card .thumb{min-height:64px;border-radius:10px}
+    .card h2{font-size:1rem}
+    .card p{display:none}
+    .card .row{margin-top:.2rem}
+    .card .row b{font-size:.88rem}
+    .card .go{width:40px;height:40px}
+  }
+</style>

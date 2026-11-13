@@ -1,0 +1,28 @@
+---
+import business from '../data/business.json';
+import logo from '../assets/images/logo.png';
+---
+<footer>
+  <div class="wrap">
+    <a class="plate" href="#top" aria-label="Back to top"><img src={logo.src} width={logo.width} height={logo.height} alt={business.name} loading="lazy"></a>
+    <span>Specialty coffee in {business.locality}, {business.region}</span>
+    <nav aria-label="Contact">
+      <a href={business.links.facebook} target="_blank" rel="noopener">Facebook</a>
+      <a href={business.links.instagram} target="_blank" rel="noopener">Instagram</a>
+      <a href={`tel:${business.phone.tel}`}>{business.phone.display}</a>
+    </nav>
+  </div>
+</footer>
+
+<style is:global>
+  footer{border-top:1px solid var(--line);padding:40px 0 48px}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--bone-dim);font-size:.92rem}
+  footer .plate{display:flex;background:#fff;border-radius:999px;padding:6px 16px}
+  footer .plate img{height:36px;width:auto}
+  footer nav{display:flex;gap:1.5rem;flex-wrap:wrap}
+  footer nav a:hover{color:var(--bone)}
+
+  @media (max-width:640px){
+    footer{padding-bottom:112px}
+  }
+</style>

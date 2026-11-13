@@ -1,0 +1,74 @@
+---
+import { Image, getImage } from 'astro:assets';
+import storefront from '../assets/images/storefront.png';
+import latteArt from '../assets/images/latte-art.png';
+import icedLineup from '../assets/images/iced-lineup.png';
+import cheers from '../assets/images/cheers.png';
+import pourOver from '../assets/images/pour-over.png';
+import lamp from '../assets/images/lamp-corner.png';
+
+// Layout slots g1..g6 are fixed by the CSS grid below; each photo keeps its own crop.
+const photos = [
+  { src: storefront, w: [360, 680], cls: 'g1', pos: '50% 40%', sizes: '(max-width: 980px) 100vw, 58vw',
+    alt: 'The Mankey Mouze storefront: dark wood front, wooden bench, round monkey sign over the path and an A-frame sign reading Budget friendly, iced and hot coffee here',
+    cap: 'The front, with the round sign over the path and the A-frame out on the street' },
+  { src: latteArt, w: [360, 680], cls: 'g2', sizes: '(max-width: 980px) 50vw, 41vw', alt: 'A barista pouring a rosetta into a red cup', cap: 'A rosetta poured into a red cup' },
+  { src: icedLineup, w: [360, 680], cls: 'g3', sizes: '(max-width: 980px) 50vw, 41vw',
+    alt: 'Iced coffees and frappes in Mankey Mouze cups on the bar, a glass dripper, French press and hand grinder behind',
+    cap: 'Iced drinks in labelled cups, with the dripper, French press and hand grinder behind' },
+  { src: cheers, w: [376], cls: 'g4', pos: '50% 40%', sizes: '(max-width: 980px) 50vw, 25vw', alt: 'Three friends clinking iced matcha, strawberry milk and chocolate', cap: 'Matcha, strawberry milk and chocolate' },
+  { src: pourOver, w: [360, 680], cls: 'g5', sizes: '(max-width: 980px) 100vw, 50vw', alt: 'Pour-over brewing into a glass server on the bar', cap: 'Pour-over, brewed while you wait' },
+  { src: lamp, w: [360, 680, 1024], full: 1280, cls: 'g6', pos: '55% 60%', sizes: '(max-width: 980px) 50vw, 25vw', alt: 'The lamp-lit corner inside the shop with the framed logo', cap: 'The lamp corner inside' },
+];
+// full-size WebP for the photo viewer: native width, except the 1536px lamp photo, capped at 1280px.
+// (Widths are written per photo: reading an imported image's .width makes Astro publish the original PNG too.)
+const fulls = await Promise.all(
+  photos.map(async (p) => (await getImage({ src: p.src, format: 'webp', quality: 85, ...(p.full ? { width: p.full } : {}) })).src)
+);
+---
+<section id="photos" class="sec" aria-labelledby="photos-h">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="big" id="photos-h" data-reveal>Around the shop</h2>
+      <p data-reveal>Real photos from the bar and the street. Tap one to see it larger.</p>
+    </div>
+    <div class="gallery">
+      {photos.map((p, i) => (
+        <figure class={p.cls} data-reveal data-light>
+          <button type="button" data-lb="gallery" data-full={fulls[i]} data-alt={p.alt} data-cap={p.cap}>
+            <Image src={p.src} alt={p.alt} format="webp" quality={80} widths={p.w} sizes={p.sizes}
+              style={p.pos ? `object-position:${p.pos}` : undefined} />
+          </button>
+          <figcaption>{p.cap}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .gallery{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:240px 240px 380px;gap:14px}
+  .gallery figure{position:relative;border-radius:6px;overflow:hidden;background:var(--wall-2)}
+  .gallery button{all:unset;display:block;width:100%;height:100%;cursor:zoom-in}
+  .gallery button:focus-visible{outline:2px solid var(--amber);outline-offset:-4px;border-radius:6px}
+  .gallery img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1),filter .4s}
+  .gallery figure:hover img{transform:scale(1.03)}
+  .gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:44px 16px 14px;pointer-events:none;font-size:.9rem;line-height:1.4;color:var(--bone);background:linear-gradient(0deg,rgba(20,22,15,.88),rgba(20,22,15,0))}
+  .g1{grid-column:1/8;grid-row:1/3}
+  .g2{grid-column:8/13;grid-row:1}
+  .g3{grid-column:8/13;grid-row:2}
+  .g4{grid-column:1/4;grid-row:3}
+  .g5{grid-column:4/10;grid-row:3}
+  .g6{grid-column:10/13;grid-row:3}
+
+  @media (max-width:980px){
+    .gallery{grid-template-columns:1fr 1fr;grid-template-rows:none;grid-auto-rows:220px;grid-auto-flow:dense}
+    .g1{grid-column:1/-1;grid-row:span 1}
+    .g2,.g3,.g4,.g5,.g6{grid-column:auto;grid-row:auto}
+    .g4,.g6{grid-row:span 2}
+    .g5{grid-column:1/-1}
+  }
+  @media (max-width:640px){
+    .gallery{gap:10px;grid-auto-rows:190px}
+  }
+</style>

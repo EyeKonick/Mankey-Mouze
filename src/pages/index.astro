@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Menu from '../components/Menu.astro';
+import About from '../components/About.astro';
+import Gallery from '../components/Gallery.astro';
+import Location from '../components/Location.astro';
+import Footer from '../components/Footer.astro';
+import PhoneDock from '../components/PhoneDock.astro';
+import Lightbox from '../components/Lightbox.astro';
+import business from '../data/business.json';
+import { currency, lowestPrice } from '../lib/menu';
+
+const title = `${business.name}, ${business.locality}`;
+const description = `A small specialty coffee bar in ${business.locality}, ${business.region}. Frappes from ${currency}${lowestPrice('frappe')}, fruit milks from ${currency}${lowestPrice('non-coffee')}, pour-over and latte art. Get directions, message us on Facebook, or call ${business.phone.display}.`;
+---
+<Base title={title} description={description}>
+  <Nav />
+  <main id="top">
+    <Hero />
+    <Menu />
+    <About />
+    <Gallery />
+    <Location />
+  </main>
+  <Footer />
+  <PhoneDock />
+  <Lightbox />
+</Base>

@@ -1,0 +1,12 @@
+# build output and dependencies
+dist/
+node_modules/
+.astro/
+
+# local env
+.env
+.env.*
+
+# tooling scratch
+.playwright-mcp/
+.impeccable/config.local.json

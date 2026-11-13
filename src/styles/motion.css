@@ -1,0 +1,59 @@
+/* Lamplight motion: "a lamp slowly lighting a corner of the shop".
+   Rules:
+   - Only opacity and transform animate.
+   - Everything is visible by default. The hidden start state exists only under html.reveal-on, which a head
+     script adds when motion is allowed and IntersectionObserver exists. It removes the class again if the
+     reveal script hasn't run within 3s, so a failed script never hides content.
+   - Reveals run once (the observer stops watching an element after it lights).
+   - prefers-reduced-motion: no reveal state, no scroll-driven motion. */
+
+:root{
+  --ease-weight:cubic-bezier(.22,.61,.36,1);   /* slow, heavy settle, no overshoot */
+  --ease-glide:cubic-bezier(.16,1,.3,1);       /* long exponential ease-out */
+  --rise:22px;
+}
+
+/* ---------- reveal: slow, soft fade-up ---------- */
+html.reveal-on [data-reveal]{
+  opacity:0;
+  transform:translate3d(0,var(--rise),0);
+  transition:opacity 1.4s var(--ease-weight) var(--d,0s),transform 1.7s var(--ease-glide) var(--d,0s);
+}
+html.reveal-on [data-reveal].is-in{opacity:1;transform:none}
+
+/* prices light up a beat after their row, like the amber catching the lamp */
+html.reveal-on .board li[data-reveal] .p{opacity:0;transition:opacity 1.2s var(--ease-weight) calc(var(--d,0s) + .35s)}
+html.reveal-on .board li[data-reveal].is-in .p{opacity:1}
+
+/* ---------- warm light fade on photos: a dim, warm veil that lifts ---------- */
+html.reveal-on [data-light]::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 95% at 62% 38%,rgba(233,184,103,.16) 0%,rgba(20,22,15,.86) 62%,rgba(20,22,15,.94) 100%);
+  opacity:1;
+  transition:opacity 2.4s var(--ease-weight) calc(var(--d,0s) + .2s);
+}
+html.reveal-on [data-light].is-in::after{opacity:0}
+
+/* ---------- hero: slow parallax drift and zoom, tied to scroll (no JS) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:scroll()){
+    .hero .photo{
+      animation:lamp 2.2s cubic-bezier(.16,1,.3,1) both,hero-drift linear both;
+      animation-timeline:auto,scroll(root block);
+      animation-range:normal,0 100svh;
+    }
+    .hero .inner{
+      animation:hero-settle linear both;
+      animation-timeline:scroll(root block);
+      animation-range:0 85svh;
+    }
+    @keyframes hero-drift{from{transform:none}to{transform:translate3d(0,14%,0) scale(1.07)}}
+    @keyframes hero-settle{from{opacity:1;transform:none}to{opacity:.3;transform:translate3d(0,-6%,0)}}
+  }
+}
+
+/* belt and braces: never hide anything for reduced-motion users */
+@media (prefers-reduced-motion:reduce){
+  html.reveal-on [data-reveal],html.reveal-on .board li[data-reveal] .p{opacity:1;transform:none;transition:none}
+  html.reveal-on [data-light]::after{display:none}
+}

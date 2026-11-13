@@ -1,0 +1,39 @@
+/* Lamplight: shared tokens, base, controls and section scaffolding.
+   Copied verbatim from the reviewed static page the Astro port was pixel-diffed against.
+   Component-specific rules live in each component's <style is:global> block, in the same order. */
+:root{
+  --wall:#14160f; --wall-2:#1d2016; --amber:#e9b867; --amber-hi:#f4ca82;
+  --bone:#ece5d4; --bone-dim:#bdb6a4; --sage:#a9b596; --ink:#1a1b13;
+  --line:rgba(236,229,212,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--wall);color-scheme:dark;scrollbar-color:var(--amber) var(--wall);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--wall);color:var(--bone);font:400 1.0625rem/1.6 "Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;caret-color:var(--amber)}
+::selection{background:var(--amber);color:var(--ink)}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-underline-offset:.25em}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:999px}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.btn{display:inline-flex;align-items:center;gap:.6rem;min-height:48px;padding:.75rem 1.35rem;border-radius:999px;font:500 1rem/1 "Hanken Grotesk",sans-serif;text-decoration:none;transition:background-color .25s cubic-bezier(.16,1,.3,1),border-color .25s,color .25s}
+.btn-amber{background:var(--amber);color:var(--ink)}
+.btn-amber:hover{background:var(--amber-hi)}
+.btn-line{border:1px solid rgba(236,229,212,.32);color:var(--bone)}
+.btn-line:hover{border-color:var(--bone);background:rgba(236,229,212,.06)}
+
+/* section scaffolding shared by the body sections */
+.wrap{width:min(1240px,calc(100% - 40px));margin:0 auto;padding:0 12px}
+.sec{padding:140px 0 0}
+h2.big{font-weight:200;font-size:clamp(2.5rem,4.6vw,4.2rem);line-height:1.02;letter-spacing:-.03em;text-wrap:balance}
+.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,38ch);gap:24px 64px;align-items:end;margin-bottom:56px}
+.head p{color:var(--bone-dim)}
+
+@media (max-width:980px){
+  .head{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .wrap{width:100%;padding:0 20px}
+  .sec{padding-top:96px}
+  .head{margin-bottom:36px}
+}

@@ -1,0 +1,41 @@
+{
+  "currency": "₱",
+  "sections": [
+    {
+      "id": "frappe",
+      "title": "Frappe",
+      "note": "blended, topped with whip cream",
+      "board": "frappe",
+      "items": [
+        { "name": "Dark Choco", "price": 115, "ingredients": "Milk, chocolate" },
+        { "name": "Oreo", "price": 115, "ingredients": "Milk, Oreo" },
+        { "name": "Choco Oreo", "price": 125, "ingredients": "Milk, Oreo, chocolate" },
+        { "name": "Matcha", "price": 125, "ingredients": "Milk, matcha" },
+        { "name": "Biscoff Milk", "price": 130, "ingredients": "Milk, Biscoff" },
+        { "name": "Biscoffee", "price": 135, "ingredients": "Milk, Biscoff, espresso", "tag": "espresso" },
+        { "name": "Salted Caramel", "price": 135, "ingredients": "Milk, caramel, espresso", "tag": "espresso" },
+        { "name": "Spanish Latte", "price": 135, "ingredients": "Milk, condensed milk, espresso", "tag": "espresso" }
+      ]
+    },
+    {
+      "id": "non-coffee",
+      "title": "Non-coffee",
+      "note": "iced milk drinks",
+      "board": "non-coffee",
+      "items": [
+        { "name": "Strawberry Milk", "price": 75, "ingredients": "Milk, condensed milk, strawberry" },
+        { "name": "Blueberry Milk", "price": 75, "ingredients": "Milk, condensed milk, blueberry" },
+        { "name": "Chocolate", "price": 85, "ingredients": "Milk, chocolate" },
+        { "name": "Thai Milk Tea", "price": 90, "ingredients": "Milk, condensed milk, Thai tea" },
+        { "name": "Matcha", "price": 90, "ingredients": "Milk, condensed milk, matcha" },
+        { "name": "Pink Matcha", "price": 110, "ingredients": "Milk, strawberry, matcha" },
+        { "name": "Choco Matcha", "price": 110, "ingredients": "Milk, chocolate, matcha" },
+        { "name": "Biscoff Milk", "price": 120, "ingredients": "Milk, condensed milk, Biscoff" }
+      ]
+    }
+  ],
+  "alsoAtTheBar": {
+    "title": "Also made at the bar",
+    "text": "Pour-over, hot espresso drinks with latte art, and iced coffee. These aren't on the boards, so ask at the window, or message us first."
+  }
+}

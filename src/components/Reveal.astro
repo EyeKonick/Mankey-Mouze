@@ -1,0 +1,29 @@
+---
+/**
+ * Reveal-on-scroll for [data-reveal] (fade-up) and [data-light] (warm light fade).
+ * Inline and dependency-free. Elements entering the viewport together are staggered top-to-bottom,
+ * left-to-right, with the total delay capped. Each element animates once.
+ * The hidden start state lives in motion.css under html.reveal-on (set in Base.astro's head).
+ */
+---
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('reveal-on')) return;
+    var els = document.querySelectorAll('[data-reveal],[data-light]');
+    var STEP = 0.11, CAP = 0.77; // seconds between neighbours, longest wait
+    var io = new IntersectionObserver(function (entries) {
+      var seen = entries.filter(function (e) { return e.isIntersecting; }).sort(function (a, b) {
+        return (a.boundingClientRect.top - b.boundingClientRect.top) || (a.boundingClientRect.left - b.boundingClientRect.left);
+      });
+      seen.forEach(function (e, i) {
+        var el = e.target;
+        el.style.setProperty('--d', Math.min(i * STEP, CAP).toFixed(2) + 's');
+        el.classList.add('is-in');
+        io.unobserve(el);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    for (var i = 0; i < els.length; i++) io.observe(els[i]);
+    window.__lampReveal = true;
+  })();
+</script>

@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import business from '../data/business.json';
+import storefront from '../assets/images/storefront.png';
+---
+<section id="visit" class="sec visit" aria-labelledby="visit-h">
+  <div class="wrap">
+    <div class="visit-card" data-reveal>
+      <div class="pic" data-light>
+        <Image src={storefront} alt="The wooden bench and stools in front of the dark wood shopfront"
+          format="webp" quality={82} widths={[480, 680]} sizes="(max-width: 980px) 100vw, 560px" />
+      </div>
+      <div class="txt">
+        <h2 class="big" id="visit-h">Find us in {business.locality}</h2>
+        <p class="sub">We're a roadside bar in {business.locality}, {business.region}. The Google Maps pin takes you to the door. When you're close, look for:</p>
+        <ol class="look">
+          <li data-reveal>The round monkey sign hanging from a post over the path</li>
+          <li data-reveal>A white "Mankey Mouze Specialty Coffee" sign on the roof</li>
+          <li data-reveal>A dark wood front with a bench and stools outside</li>
+          <li data-reveal>The A-frame: "Budget friendly. Iced and hot coffee here."</li>
+        </ol>
+        <a class="btn primary" href={business.links.directions} target="_blank" rel="noopener"><Icon name="pin" /> Get directions</a>
+        <div class="contacts" data-reveal>
+          <a href={business.links.facebook} target="_blank" rel="noopener"><span><Icon name="message" /> Facebook</span><b>Message us</b></a>
+          <a href={business.links.instagram} target="_blank" rel="noopener"><span><Icon name="instagram" /> Instagram</span><b>{business.links.instagramHandle}</b></a>
+          <a href={`tel:${business.phone.tel}`}><span><Icon name="phone" /> Call or text</span><b>{business.phone.display}</b></a>
+        </div>
+        <p class="hours">Opening hours aren't listed here yet. Message us on Facebook to check before a special trip.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .visit{padding-bottom:120px}
+  .visit-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:0;border-radius:28px;background:var(--bone);color:var(--ink);overflow:hidden;box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
+  .visit-card .pic{position:relative;min-height:520px}
+  .visit-card .pic{overflow:hidden}
+  .visit-card .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:84% 80%}
+  .visit-card .txt{padding:56px 56px 48px}
+  .visit-card h2.big{color:var(--ink)}
+  .visit-card .sub{margin-top:1rem;color:#4c4d42;max-width:46ch}
+  .look{list-style:none;margin:1.8rem 0 2rem;counter-reset:l}
+  .look li{counter-increment:l;display:grid;grid-template-columns:2rem 1fr;padding:.7rem 0;border-bottom:1px solid rgba(26,27,19,.14);color:#2e2f26}
+  .look li::before{content:counter(l);color:#6f5320;font-weight:600}
+  .visit-card .primary{background:var(--ink);color:var(--bone)}
+  .visit-card .primary:hover{background:#000}
+  .contacts{list-style:none;margin-top:22px;border-top:1px solid rgba(26,27,19,.18)}
+  .contacts a{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:14px 2px;border-bottom:1px solid rgba(26,27,19,.18);text-decoration:none;transition:color .2s}
+  .contacts a span{font-size:.95rem;color:#4c4d42;display:flex;align-items:center;gap:.55rem}
+  .contacts a b{font-weight:600;font-size:1rem;text-decoration:underline;text-decoration-color:rgba(26,27,19,.25);text-underline-offset:.3em;transition:text-decoration-color .2s}
+  .contacts a:hover b{text-decoration-color:var(--ink)}
+  .contacts a:focus-visible{border-radius:6px}
+  .contacts svg.i{width:15px;height:15px}
+  .hours{margin-top:1.4rem;font-size:.92rem;color:#5b5c50}
+
+  @media (max-width:980px){
+    .visit-card{grid-template-columns:1fr}
+    .visit-card .pic{min-height:300px}
+  }
+  @media (max-width:640px){
+    .visit-card{border-radius:22px}
+    .visit-card .pic{min-height:260px}
+    .visit-card .pic img{object-position:70% 86%;transform:scale(1.7);transform-origin:70% 86%}
+    .visit-card .txt{padding:32px 22px 28px}
+    .visit-card .primary{width:100%;justify-content:center}
+    .visit{padding-bottom:96px}
+  }
+</style>

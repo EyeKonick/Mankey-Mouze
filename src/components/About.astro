@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import business from '../data/business.json';
+import { sections, currency, priceRange } from '../lib/menu';
+import pourOver from '../assets/images/pour-over.png';
+
+const counts = sections.map((s) => `${s.items.length} ${s.title === 'Frappe' ? 'frappes' : `${s.title.toLowerCase()} drinks`}`).join(', ');
+const { min } = priceRange();
+---
+<section id="about" class="sec" aria-labelledby="about-h">
+  <div class="wrap about">
+    <figure data-reveal data-light>
+      <Image src={pourOver} alt="A barista pouring water over a glass dripper at the Mankey Mouze bar, a gooseneck kettle in hand"
+        format="webp" quality={80} widths={[480, 680]} sizes="(max-width: 980px) 100vw, 55vw" />
+    </figure>
+    <div>
+      <h2 class="big" id="about-h" data-reveal>A small bar that takes its time</h2>
+      <blockquote data-reveal>{business.quote}</blockquote>
+      <cite data-reveal>{business.shortName}, on its Facebook page</cite>
+      <p class="story" data-reveal>{business.shortName} is a specialty coffee bar on the roadside in {business.locality}, {business.region}. Coffee is made by hand at the bar: water poured slowly through a glass dripper, milk folded into a rosetta, iced drinks served in cups with the monkey on the label.</p>
+      <p class="story" data-reveal>The sign out front says it plainly: budget friendly, iced and hot coffee here. Take a drink to go from the window, sit on the bench outside, or stay in the lamp-lit corner.</p>
+      <ul class="facts">
+        <li data-reveal><span>Brewed at the bar</span><span>Pour-over, espresso, latte art</span></li>
+        <li data-reveal><span>On the boards</span><span>{counts}</span></li>
+        <li data-reveal><span>Cheapest cup</span><span>Fruit milk, {currency}{min}</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .about{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:64px;align-items:start}
+  .about figure{position:relative;overflow:hidden;margin-left:calc((100vw - min(1240px,calc(100vw - 40px))) / -2 - 12px)}
+  .about figure img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:52% 46%;transform:scale(1.45);transform-origin:52% 46%}
+  .about figure{-webkit-mask-image:linear-gradient(90deg,#000 55%,transparent 100%);mask-image:linear-gradient(90deg,#000 55%,transparent 100%)}
+  #about-h{margin-bottom:1.6rem}
+  blockquote{font-weight:200;font-size:clamp(1.8rem,2.8vw,2.6rem);line-height:1.4;letter-spacing:-.02em;text-wrap:balance}
+  blockquote::before{content:"\201C";color:var(--amber)}
+  blockquote::after{content:"\201D";color:var(--amber)}
+  .about cite{display:block;margin-top:1rem;font-style:normal;color:var(--bone-dim);font-size:.95rem}
+  .about .story{margin-top:2rem;color:var(--bone-dim);max-width:52ch}
+  .about .story + .story{margin-top:1rem}
+  .facts{list-style:none;margin-top:2rem;border-top:1px solid var(--line)}
+  .facts li{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
+  .facts li span:first-child{white-space:nowrap}
+  .facts li span:last-child{color:var(--bone-dim);text-align:right}
+
+  @media (max-width:980px){
+    .about{grid-template-columns:1fr}
+    .about figure{margin:0 -32px}
+    .about figure{-webkit-mask-image:linear-gradient(0deg,transparent 0%,#000 40%);mask-image:linear-gradient(0deg,transparent 0%,#000 40%)}
+  }
+  @media (max-width:640px){
+    .about figure{margin:0 -20px}
+  }
+</style>
