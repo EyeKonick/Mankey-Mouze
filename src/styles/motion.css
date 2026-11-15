@@ -52,7 +52,12 @@ html.reveal-on [data-light].is-in::after{opacity:0}
   }
 }
 
-/* belt and braces: never hide anything for reduced-motion users */
+/* belt and braces: never hide anything for reduced-motion users, or on paper
+   (printing or saving to PDF would otherwise drop every section the visitor hadn't scrolled to) */
+@media print{
+  html.reveal-on [data-reveal],html.reveal-on .board li[data-reveal] .p{opacity:1;transform:none;transition:none}
+  html.reveal-on [data-light]::after{display:none}
+}
 @media (prefers-reduced-motion:reduce){
   html.reveal-on [data-reveal],html.reveal-on .board li[data-reveal] .p{opacity:1;transform:none;transition:none}
   html.reveal-on [data-light]::after{display:none}
